@@ -2,6 +2,10 @@ require 'sinatra/base'
 
 class BattleshipsWeb < Sinatra::Base
 
+  enable :sessions
+
+  DEFAULT_PLAYER_NAME = "Anonymous"
+
   set :views, proc { File.join(root, '..', 'views') }
 
   get '/' do
@@ -16,8 +20,7 @@ class BattleshipsWeb < Sinatra::Base
   end
 
   post '/game' do
-    player_name = params[:name]
-    p player_name
+    params[:name].empty? ? player_name = DEFAULT_PLAYER_NAME : player_name = params[:name]
     session[:player_name] = player_name
     @name_display = "<h2 name=\"playername\">Player 1: #{player_name}</h2>" if player_name.length > 0
     erb :game

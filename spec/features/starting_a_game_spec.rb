@@ -7,11 +7,17 @@ feature "Starting a new game" do
     expect(page).to have_content "Enter name"
   end
 
-  scenario " I do not enter my name and game starts" do
+  scenario " I enter my name and game starts" do
     visit "/newgame"
     fill_in("name", with: "John")
     click_button "Submit"
     expect(page).to have_content "Player 1: John"
+  end
+
+  scenario " I do not enter my name and game starts" do
+    visit "/newgame"
+    click_button "Submit"
+    expect(page).to have_content "Player 1: Anonymous"
   end
 
 end
