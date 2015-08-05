@@ -1,8 +1,8 @@
 <% if @new_game_clicked %>
 <h1>Enter name</h1>
-  <form action="game" method="POST">
-    <input type="text" name="playername">
-    <input type="submit" value="submit">
+  <form action="/game" method="POST">
+    <input type="text" name="name">
+    <input type="submit" value="Submit">
   </form>
  <% else %>
   <form method="get" action="/newgame">

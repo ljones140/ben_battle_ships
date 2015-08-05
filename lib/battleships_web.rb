@@ -11,12 +11,16 @@ class BattleshipsWeb < Sinatra::Base
   get '/newgame' do
 
     @new_game_clicked = true
-    # @to_return = "<h1>What's your name?</h1>
-    #               <form action=\"game\" method=\"POST\">
-    #                 <input type=\"text\" name=\"playername\">
-    #                 <input type=\"submit\" value=\"submit\">
-    #               </form>"
+
     erb :index
+  end
+
+  post '/game' do
+    player_name = params[:name]
+    p player_name
+    session[:player_name] = player_name
+    @name_display = "<h2 name=\"playername\">Player 1: #{player_name}</h2>" if player_name.length > 0
+    erb :game
   end
 
 
