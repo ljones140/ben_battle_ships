@@ -1,1 +1,18 @@
-<%= @name_display %>
+<h2 name= "playername"><%= @name_display %></h2>
+<div class="board">
+  <h2>your board</h2>
+  <pre><%= @board %></pre>
+</div>
+
+<form action="/game" method="post">
+  <select name="fleet">
+    <option selected="selected" value="destroyer">destroyer</option>
+    <option value="submarine">submarine</option>
+    <option value="cruiser">cruiser</option>
+    <option value="battleship">battleship</option>
+    <option value="aircraft_carrier">aircaft carrier</option>
+  </select>
+  <input type="text" name="coordinate">
+  <input type="text" name="direction">
+  <input type="submit" value="Submit">
+</form>
