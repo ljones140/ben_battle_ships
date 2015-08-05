@@ -4,6 +4,7 @@
   <pre><%= @board %></pre>
 </div>
 
+
 <form action="/game" method="post">
   <select name="fleet">
     <option selected="selected" value="destroyer">destroyer</option>
@@ -12,7 +13,9 @@
     <option value="battleship">battleship</option>
     <option value="aircraft_carrier">aircaft carrier</option>
   </select>
-  <input type="text" name="coordinate">
-  <input type="text" name="direction">
+  choose ship<br />
+  <input type="text" name="coordinate"> enter coordinate<br />
+  <input type="radio" name="direction" value="horizontally">horizontal
+  <input type="radio" name="direction" value="vertically">vertical<br />
   <input type="submit" value="Submit">
 </form>

@@ -41,16 +41,17 @@ feature "Starting a new game" do
   scenario "I can enter polarity" do
     visit "/newgame"
     click_button "Submit"
-    expect(page).to have_selector("input[type=text][name='direction']")
+    expect(page).to have_selector("input[type=radio][name='direction']")
   end
 
   scenario "I can place a ship" do
     visit "/newgame"
     click_button "Submit"
     select "destroyer", from: "fleet"
-    fill_in "direction", with: "A1"
+    fill_in "coordinate", with: "A1"
+    page.find(:css, '[name=direction][value=horizontally]').set(true)
     click_button "Submit"
-    expect(page).to have content "Ship Placed at A1"
+    expect(page).to have_content "destoyer Placed at A1"
   end
 end
 

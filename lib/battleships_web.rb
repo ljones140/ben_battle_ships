@@ -3,7 +3,9 @@ require 'battleships'
 
 class BattleshipsWeb < Sinatra::Base
 
-  enable :sessions
+  use Rack::Session::Cookie,:key => 'rack.session',
+                           :path => '/',
+                           :secret => 'your_secret'
 
   DEFAULT_PLAYER_NAME = "Anonymous"
 
@@ -16,20 +18,23 @@ class BattleshipsWeb < Sinatra::Base
   get '/newgame' do
 
     @new_game_clicked = true
-
     erb :index
   end
 
   post '/game' do
-    params[:name].empty? ? player_name = DEFAULT_PLAYER_NAME : player_name = params[:name]
+    player_name = session[:player_name] if session[:player_name]
+    if params[:name]
+      params[:name].empty? ? player_name = DEFAULT_PLAYER_NAME : player_name = params[:name]
+    end
     session[:player_name] = player_name
-    @name_display = "Player 1: #{player_name}" if player_name.length > 0
-    $game = Game.new Player, Board
-    if params[:fleet] != nil
+    @name_display = "Player 1: #{player_name}" if player_name
+    $game = Game.new(Player, Board)
+    if params[:fleet]
       ship = params[:fleet]
-      coordinate = params[:coordinate]
-      position = params[:position]
-      $game.player_1.place_ship(Ship.battleship, :B4, :vertically)
+      coordinate = params[:coordinate].to_sym
+      direction = params[:direction].to_sym
+      $game.player_1.place_ship(Ship.new(ship.to_sym), coordinate, direction)
+      @ship_placed = true
     end
     @board = $game.own_board_view($game.player_1)
     erb :game
