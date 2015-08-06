@@ -14,8 +14,11 @@
     <option value="aircraft_carrier">aircaft carrier</option>
   </select>
   choose ship<br />
-  <input type="text" name="coordinate"> enter coordinate<br />
-  <input type="radio" name="direction" value="horizontally">horizontal
+  <input type="text" name="coordinate" size="3"> enter coordinate<br />
+  <input type="radio" name="direction" value="horizontally" checked="checked">horizontal
   <input type="radio" name="direction" value="vertically">vertical<br />
   <input type="submit" value="Submit">
+</form>
+<form action ="/play-mode" method="post">
+  <input type="submit" value="ready" name="ready">
 </form>

@@ -51,11 +51,55 @@ feature "Starting a new game" do
     fill_in "coordinate", with: "A1"
     page.find(:css, '[name=direction][value=horizontally]').set(true)
     click_button "Submit"
-    expect(page).to have_content
-    "ABCDEFGHIJ
+    expect(page).to have_content "ABCDEFGHIJ
   ------------
  1|DD        |1
  2|          |2
+ 3|          |3
+ 4|          |4
+ 5|          |5
+ 6|          |6
+ 7|          |7
+ 8|          |8
+ 9|          |9
+10|          |10
+  ------------
+   ABCDEFGHIJ"
+ end
+
+  scenario "I can place a ship horizontally by default" do
+    visit "/newgame"
+    click_button "Submit"
+    select "destroyer", from: "fleet"
+    fill_in "coordinate", with: "A1"
+    click_button "Submit"
+    expect(page).to have_content "ABCDEFGHIJ
+  ------------
+ 1|DD        |1
+ 2|          |2
+ 3|          |3
+ 4|          |4
+ 5|          |5
+ 6|          |6
+ 7|          |7
+ 8|          |8
+ 9|          |9
+10|          |10
+  ------------
+   ABCDEFGHIJ"
+ end
+
+ scenario "I can place a ship vertically" do
+    visit "/newgame"
+    click_button "Submit"
+    select "destroyer", from: "fleet"
+    fill_in "coordinate", with: "A1"
+    page.find(:css, '[name=direction][value=vertically]').set(true)
+    click_button "Submit"
+    expect(page).to have_content "ABCDEFGHIJ
+  ------------
+ 1|D         |1
+ 2|D         |2
  3|          |3
  4|          |4
  5|          |5
@@ -80,8 +124,7 @@ feature "Starting a new game" do
     fill_in "coordinate", with: "B4"
     page.find(:css, '[name=direction][value=vertically]').set(true)
     click_button "Submit"
-    expect(page).to have_content
-    "ABCDEFGHIJ
+    expect(page).to have_content "ABCDEFGHIJ
   ------------
  1|DD        |1
  2|          |2
@@ -96,5 +139,36 @@ feature "Starting a new game" do
   ------------
    ABCDEFGHIJ"
   end
+
+  scenario "I can ready a game" do
+    visit "/newgame"
+    click_button "Submit"
+    expect(page).to have_selector("input[type=submit][name='ready']")
+  end
+
+  scenario "I can go into playing screen" do
+    visit "/newgame"
+    click_button "Submit"
+    select "destroyer", from: "fleet"
+    fill_in "coordinate", with: "A1"
+    page.find(:css, '[name=direction][value=horizontally]').set(true)
+    click_button "Submit"
+    click_button "ready"
+    expect(page).to have_content "My Board"
+  end
+
+  scenario "I can go into playing screen" do
+    visit "/newgame"
+    click_button "Submit"
+    select "destroyer", from: "fleet"
+    fill_in "coordinate", with: "A1"
+    page.find(:css, '[name=direction][value=horizontally]').set(true)
+    click_button "Submit"
+    click_button "ready"
+    expect(page).to have_content "My Board"
+  end
+
+
+
 end
 

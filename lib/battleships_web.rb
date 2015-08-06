@@ -3,9 +3,7 @@ require 'battleships'
 
 class BattleshipsWeb < Sinatra::Base
 
-  use Rack::Session::Cookie,:key => 'rack.session',
-                           :path => '/',
-                           :secret => 'your_secret'
+  enable :sessions
 
   DEFAULT_PLAYER_NAME = "Anonymous"
 
@@ -29,6 +27,13 @@ class BattleshipsWeb < Sinatra::Base
     place_ship params if params[:fleet]
     @board = $game.own_board_view($game.player_1)
     erb :game
+  end
+
+  post '/play-mode' do
+    @player_name = session[:player_name]
+    session[:player_name] = @player_name
+    @own_board = $game.own_board_view($game.player_1)
+    erb :play
   end
 
   def set_player_name params
