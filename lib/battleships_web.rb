@@ -18,6 +18,7 @@ class BattleshipsWeb < Sinatra::Base
   get '/newgame' do
 
     @new_game_clicked = true
+    $game = Game.new(Player, Board)
     erb :index
   end
 
@@ -28,7 +29,6 @@ class BattleshipsWeb < Sinatra::Base
     end
     session[:player_name] = player_name
     @name_display = "Player 1: #{player_name}" if player_name
-    $game = Game.new(Player, Board)
     if params[:fleet]
       ship = params[:fleet]
       coordinate = params[:coordinate].to_sym
@@ -40,16 +40,8 @@ class BattleshipsWeb < Sinatra::Base
     erb :game
   end
 
-  # get '/game' do
-  #   player_name = session[:player_name]
-  #   @name_display = "Player 1: #{player_name}" if session[:player_name].length > 0
-  #   ship = params[:fleet]
-  #   coordinate = params[:coordinate]
-  #   position = params[:position]
-  #   $game.player_1.place_ship(Ship.battleship, :B4, :vertically)
-  #   @board = $game.own_board_view($game.player_1)
-  #   erb :game
-  # end
+
+
   # start the server if ruby file executed directly
   run! if app_file == $0
 end

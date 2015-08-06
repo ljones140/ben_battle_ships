@@ -51,7 +51,50 @@ feature "Starting a new game" do
     fill_in "coordinate", with: "A1"
     page.find(:css, '[name=direction][value=horizontally]').set(true)
     click_button "Submit"
-    expect(page).to have_content "destoyer Placed at A1"
+    expect(page).to have_content
+    "ABCDEFGHIJ
+  ------------
+ 1|DD        |1
+ 2|          |2
+ 3|          |3
+ 4|          |4
+ 5|          |5
+ 6|          |6
+ 7|          |7
+ 8|          |8
+ 9|          |9
+10|          |10
+  ------------
+   ABCDEFGHIJ"
+ end
+
+
+  scenario "I can place multiple ship" do
+    visit "/newgame"
+    click_button "Submit"
+    select "destroyer", from: "fleet"
+    fill_in "coordinate", with: "A1"
+    page.find(:css, '[name=direction][value=horizontally]').set(true)
+    click_button "Submit"
+    select "cruiser", from: "fleet"
+    fill_in "coordinate", with: "B4"
+    page.find(:css, '[name=direction][value=vertically]').set(true)
+    click_button "Submit"
+    expect(page).to have_content
+    "ABCDEFGHIJ
+  ------------
+ 1|DD        |1
+ 2|          |2
+ 3|          |3
+ 4| C        |4
+ 5| C        |5
+ 6| C        |6
+ 7|          |7
+ 8|          |8
+ 9|          |9
+10|          |10
+  ------------
+   ABCDEFGHIJ"
   end
 end
 
