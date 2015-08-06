@@ -23,21 +23,23 @@ class BattleshipsWeb < Sinatra::Base
   end
 
   post '/game' do
-    player_name = session[:player_name] if session[:player_name]
-    if params[:name]
-      params[:name].empty? ? player_name = DEFAULT_PLAYER_NAME : player_name = params[:name]
-    end
-    session[:player_name] = player_name
-    @name_display = "Player 1: #{player_name}" if player_name
-    if params[:fleet]
-      ship = params[:fleet]
-      coordinate = params[:coordinate].to_sym
-      direction = params[:direction].to_sym
-      $game.player_1.place_ship(Ship.new(ship.to_sym), coordinate, direction)
-      @ship_placed = true
-    end
+    @player_name = session[:player_name] if session[:player_name]
+    @player_name = set_player_name params if params[:name]
+    session[:player_name] = @player_name
+    place_ship params if params[:fleet]
     @board = $game.own_board_view($game.player_1)
     erb :game
+  end
+
+  def set_player_name params
+    params[:name].empty? ? player_name = DEFAULT_PLAYER_NAME : player_name = params[:name]
+  end
+
+  def place_ship params
+    ship = params[:fleet]
+    coordinate = params[:coordinate].to_sym
+    direction = params[:direction].to_sym
+    $game.player_1.place_ship(Ship.new(ship.to_sym), coordinate, direction)
   end
 
 
