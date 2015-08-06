@@ -8,7 +8,7 @@ class BattleshipsWeb < Sinatra::Base
   DEFAULT_PLAYER_NAME = "Anonymous"
 
   set :views, proc { File.join(root, '..', 'views') }
-  set :public, proc { File.join(root, '..', 'public') }
+  # set :public, proc { File.join(root, '..', 'public') }
 
   get '/' do
     erb :index
@@ -24,6 +24,7 @@ class BattleshipsWeb < Sinatra::Base
   post '/game' do
     @player_name = session[:player_name] if session[:player_name]
     @player_name = set_player_name params if params[:name]
+    session[:player_name] = @player_name
     @player_to_play = session[:player_to_play]
     place_ship params if params[:fleet]
     @board = $game.own_board_view($game.send(@player_to_play))

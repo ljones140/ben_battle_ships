@@ -7,12 +7,17 @@ feature "I am in play mode" do
 
   def set_up_player
     visit "/newgame"
+    fill_in("name", with: "John")
     click_button "Submit"
     select "destroyer", from: "fleet"
     fill_in "coordinate", with: "A1"
     page.find(:css, '[name=direction][value=horizontally]').set(true)
     click_button "Submit"
     click_button "ready"
+  end
+
+  scenario "I can see my name" do
+    expect(page).to have_content "player_1 John"
   end
 
   scenario "I can go into playing screen" do
