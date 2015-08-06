@@ -8,15 +8,15 @@ feature 'Registering two players' do
     click_button 'Submit'
     expect(page).to have_content "player_1: John"
 
-    old_session = Capybara.session_name
-    Capybara.session_name = :second_session
+    # old_session = Capybara.session_name
+    # Capybara.session_name = :second_session
 
     visit '/'
     click_button "New Game"
     fill_in("name", with: "Jill")
     click_button 'Submit'
     expect(page).to have_content "player_2: Jill"
-    Capybara.session_name = old_session
+    # Capybara.session_name = old_session
   end
 end
 

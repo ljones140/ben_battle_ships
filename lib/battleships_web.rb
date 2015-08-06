@@ -43,23 +43,12 @@ class BattleshipsWeb < Sinatra::Base
   end
 
   def set_player_to_play
-    player_to_play = "player_1" unless session[:player_to_play].freeze
+    player_to_play = "player_1" unless session[:player_to_play]
     player_to_play = "player_2" if session[:player_to_play] == "player_1"
-    player_to_play = "player_1" if session[:player_to_play] == "player_2"
     session[:player_to_play] = player_to_play
     player_to_play
   end
 
-  # def set_player_to_play
-  #     player_to_play = session[:player_to_play].freeze
-  #   if player_to_play == "player_1"
-  #     session[:player_to_play] = "player_2"
-  #   elsif player_to_play == "player_2"
-  #     session[:player_to_play] = "player_1 "
-  #   else
-  #     session[:player_to_play] = "player_1"
-  #   end
-  # end
 
   def shoot params
     @player_to_play = session[:player_to_play]
