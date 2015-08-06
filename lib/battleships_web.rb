@@ -8,15 +8,15 @@ class BattleshipsWeb < Sinatra::Base
   DEFAULT_PLAYER_NAME = "Anonymous"
 
   set :views, proc { File.join(root, '..', 'views') }
+  set :public, proc { File.join(root, '..', 'public') }
 
   get '/' do
     erb :index
   end
 
   get '/newgame' do
-
     @new_game_clicked = true
-    $game = Game.new(Player, Board)
+    $game ? $game : $game = Game.new(Player, Board)
     erb :index
   end
 
@@ -33,7 +33,14 @@ class BattleshipsWeb < Sinatra::Base
     @player_name = session[:player_name]
     session[:player_name] = @player_name
     @own_board = $game.own_board_view($game.player_1)
+    shoot params if params[:fire]
+    @enemy_board = $game.opponent_board_view($game.player_1)
     erb :play
+  end
+
+  def shoot params
+    coordinate = params[:coordinate].to_sym
+    $game.player_1.shoot coordinate
   end
 
   def set_player_name params

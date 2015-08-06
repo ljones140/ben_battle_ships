@@ -3,3 +3,12 @@
   <h2>My Board</h2>
   <pre><%= @own_board %></pre>
 </div>
+<div class="board">
+  <h2>Enemy Board</h2>
+  <pre><%= @enemy_board %></pre>
+</div>
+<form action ="/play-mode" method="post">
+  <input type="text" name="coordinate" size="3">enter coordinate<br />
+   <input type="submit" value="fire" name="fire">
+</form>
+

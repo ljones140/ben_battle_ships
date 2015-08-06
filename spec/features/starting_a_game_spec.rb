@@ -1,6 +1,11 @@
 require "spec_helper"
 
+
+
 feature "Starting a new game" do
+
+  before { $game = Game.new(Player, Board) }
+
   scenario "I am asked to enter my name" do
     visit "/"
     click_button "New Game"
@@ -20,13 +25,13 @@ feature "Starting a new game" do
     expect(page).to have_content "Player 1: Anonymous"
   end
 
-  scenario " I see my board after game starts" do
+  scenario " I see my board after" do
     visit "/newgame"
     click_button "Submit"
     expect(page).to have_content "your board"
   end
 
-  scenario "I can see ships when game starts" do
+  scenario "I can see ships" do
     visit "/newgame"
     click_button "Submit"
     expect(page).to have_select("fleet", selected: "destroyer")
@@ -145,30 +150,7 @@ feature "Starting a new game" do
     click_button "Submit"
     expect(page).to have_selector("input[type=submit][name='ready']")
   end
-
-  scenario "I can go into playing screen" do
-    visit "/newgame"
-    click_button "Submit"
-    select "destroyer", from: "fleet"
-    fill_in "coordinate", with: "A1"
-    page.find(:css, '[name=direction][value=horizontally]').set(true)
-    click_button "Submit"
-    click_button "ready"
-    expect(page).to have_content "My Board"
-  end
-
-  scenario "I can go into playing screen" do
-    visit "/newgame"
-    click_button "Submit"
-    select "destroyer", from: "fleet"
-    fill_in "coordinate", with: "A1"
-    page.find(:css, '[name=direction][value=horizontally]').set(true)
-    click_button "Submit"
-    click_button "ready"
-    expect(page).to have_content "My Board"
-  end
-
-
-
 end
+
+
 
