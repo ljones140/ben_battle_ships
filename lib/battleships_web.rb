@@ -24,9 +24,7 @@ class BattleshipsWeb < Sinatra::Base
   post '/game' do
     @player_name = session[:player_name] if session[:player_name]
     @player_name = set_player_name params if params[:name]
-    session[:player_name] = @player_name
     @player_to_play = session[:player_to_play]
-    session[:player_to_play] = @player_to_play
     place_ship params if params[:fleet]
     @board = $game.own_board_view($game.send(@player_to_play))
     erb :game
@@ -35,7 +33,6 @@ class BattleshipsWeb < Sinatra::Base
   post '/play-mode' do
     @player_name = session[:player_name]
     @player_to_play = session[:player_to_play]
-    session[:player_name] = @player_name
     @own_board = $game.own_board_view($game.send(@player_to_play))
     shoot params if params[:fire]
     @enemy_board = $game.opponent_board_view($game.send(@player_to_play))
@@ -51,7 +48,6 @@ class BattleshipsWeb < Sinatra::Base
 
 
   def shoot params
-    @player_to_play = session[:player_to_play]
     coordinate = params[:coordinate].to_sym
     if session[:player_to_play] == "player_1"
       $game.player_1.shoot coordinate
@@ -65,7 +61,6 @@ class BattleshipsWeb < Sinatra::Base
   end
 
   def place_ship params
-    @player_to_play = session[:player_to_play]
     ship = params[:fleet]
     coordinate = params[:coordinate].to_sym
     direction = params[:direction].to_sym
