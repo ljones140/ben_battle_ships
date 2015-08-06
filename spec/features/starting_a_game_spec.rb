@@ -1,5 +1,24 @@
 require "spec_helper"
 
+feature 'Registering two players' do
+  scenario 'I want to register two players' do
+    visit '/'
+    click_button "New Game"
+    fill_in("name", with: "John")
+    click_button 'Submit'
+    expect(page).to have_content "player_1: John"
+
+    old_session = Capybara.session_name
+    Capybara.session_name = :second_session
+
+    visit '/'
+    click_button "New Game"
+    fill_in("name", with: "Jill")
+    click_button 'Submit'
+    expect(page).to have_content "player_2: Jill"
+    Capybara.session_name = old_session
+  end
+end
 
 
 feature "Starting a new game" do
@@ -16,13 +35,14 @@ feature "Starting a new game" do
     visit "/newgame"
     fill_in("name", with: "John")
     click_button "Submit"
-    expect(page).to have_content "Player 1: John"
+    expect(page).to have_content "player_1: John"
   end
+
 
   scenario " I do not enter my name and game starts" do
     visit "/newgame"
     click_button "Submit"
-    expect(page).to have_content "Player 1: Anonymous"
+    expect(page).to have_content "player_1: Anonymous"
   end
 
   scenario " I see my board after" do
