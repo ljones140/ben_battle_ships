@@ -2,6 +2,7 @@ feature "I am in play mode" do
 
   before do
     $game = Game.new(Player, Board)
+    $player_count = 1
     set_up_player
   end
 
@@ -32,8 +33,9 @@ feature "I am in play mode" do
     fill_in "coordinate", with: "A4"
     click_button "fire"
     expect(page).to have_content "Enemy Board ABCDEFGHIJ ------------ 1| |1 2| |2 3| |3 4|- |4 5| |5 6| |6 7| |7 8| |8 9| |9 10| |10 ------------ ABCDEFGHIJ"
-
   end
-
-
 end
+
+  $player_count = 0
+
+

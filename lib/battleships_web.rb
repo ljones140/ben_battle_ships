@@ -8,7 +8,7 @@ class BattleshipsWeb < Sinatra::Base
   DEFAULT_PLAYER_NAME = "Anonymous"
 
   set :views, proc { File.join(root, '..', 'views') }
-  # set :public, proc { File.join(root, '..', 'public') }
+  set :public, proc { File.join(root, '..', 'public') }
 
   get '/' do
     erb :index
@@ -17,6 +17,7 @@ class BattleshipsWeb < Sinatra::Base
   get '/newgame' do
     @new_game_clicked = true
     $game ? $game : $game = Game.new(Player, Board)
+    $player_count ? $player_count = $player_count : $player_count = 1
     @player_to_play = set_player_to_play
     erb :index
   end
@@ -41,8 +42,11 @@ class BattleshipsWeb < Sinatra::Base
   end
 
   def set_player_to_play
-    player_to_play = "player_1" unless session[:player_to_play]
-    player_to_play = "player_2" if session[:player_to_play] == "player_1"
+    player_to_play = "player_2" if $player_count > 1
+    if $player_count == 1
+      player_to_play = "player_1"
+      $player_count += 1
+    end
     session[:player_to_play] = player_to_play
     player_to_play
   end

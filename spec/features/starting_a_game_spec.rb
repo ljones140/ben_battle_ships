@@ -1,22 +1,32 @@
 require "spec_helper"
 
+
+
 feature 'Registering two players' do
+
+
+  before do
+    $player_count = 1
+  end
+
   scenario 'I want to register two players' do
-    visit '/'
-    click_button "New Game"
-    fill_in("name", with: "John")
-    click_button 'Submit'
-    expect(page).to have_content "player_1: John"
+    in_browser(:chrome) do
+      visit '/'
+      click_button "New Game"
+      fill_in("name", with: "Jack")
+      click_button 'Submit'
+      expect(page).to have_content "player_1: Jack"
+    end
 
-    # old_session = Capybara.session_name
-    # Capybara.session_name = :second_session
 
-    visit '/'
-    click_button "New Game"
-    fill_in("name", with: "Jill")
-    click_button 'Submit'
-    expect(page).to have_content "player_2: Jill"
-    # Capybara.session_name = old_session
+  in_browser(:safari) do
+      visit '/'
+      click_button "New Game"
+      fill_in("name", with: "Jill")
+      click_button 'Submit'
+      expect(page).to have_content "player_2: Jill"
+
+    end
   end
 end
 
@@ -31,18 +41,11 @@ feature "Starting a new game" do
     expect(page).to have_content "Enter name"
   end
 
-  scenario " I enter my name and game starts" do
-    visit "/newgame"
-    fill_in("name", with: "John")
-    click_button "Submit"
-    expect(page).to have_content "player_1: John"
-  end
-
 
   scenario " I do not enter my name and game starts" do
     visit "/newgame"
     click_button "Submit"
-    expect(page).to have_content "player_1: Anonymous"
+    expect(page).to have_content "Anonymous"
   end
 
   scenario " I see my board after" do
@@ -171,6 +174,14 @@ feature "Starting a new game" do
     expect(page).to have_selector("input[type=submit][name='ready']")
   end
 end
+
+def in_browser(name)
+  old_session = Capybara.session_name
+  Capybara.session_name = name
+  yield
+  Capybara.session_name = old_session
+end
+
 
 
 
