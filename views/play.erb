@@ -1,10 +1,12 @@
 <h2 name= "playername"><%= @player_to_play %> <%= @player_name %></h2>
+<h1><%= @win_status %></h1>
 <div class="board">
   <h2>My Board</h2>
   <pre><%= @own_board %></pre>
 </div>
 <div class="board">
   <h2>Enemy Board</h2>
+  <h1><%= @shoot_result %></h1>
   <pre><%= @enemy_board %></pre>
 </div>
 <form action ="/play-mode" method="post">

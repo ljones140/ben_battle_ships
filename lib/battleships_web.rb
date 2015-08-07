@@ -36,8 +36,9 @@ class BattleshipsWeb < Sinatra::Base
     @player_name = session[:player_name]
     @player_to_play = session[:player_to_play]
     @own_board = $game.own_board_view($game.send(@player_to_play))
-    shoot params if params[:fire]
+    @shoot_result = shoot params if params[:fire]
     @enemy_board = $game.opponent_board_view($game.send(@player_to_play))
+    @win_status = "You Have won" if is_player_winner?
     erb :play
   end
 
@@ -55,10 +56,11 @@ class BattleshipsWeb < Sinatra::Base
   def shoot params
     coordinate = params[:coordinate].to_sym
     if session[:player_to_play] == "player_1"
-      $game.player_1.shoot coordinate
+      result = $game.player_1.shoot coordinate
     else
-      $game.player_2.shoot coordinate
+      result = $game.player_2.shoot coordinate
     end
+    result
   end
 
   def set_player_name params
@@ -74,6 +76,16 @@ class BattleshipsWeb < Sinatra::Base
     else
       $game.player_2.place_ship(Ship.new(ship.to_sym), coordinate, direction)
     end
+  end
+
+  def is_player_winner?
+    # $game.send(session[:player_to_play]).winner?
+    if session[:player_to_play] == "player_1"
+      won = $game.player_1.winner?
+    else
+      won = $game.player_2.winner?
+    end
+    won
   end
 
 

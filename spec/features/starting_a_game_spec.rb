@@ -19,13 +19,12 @@ feature 'Registering two players' do
     end
 
 
-  in_browser(:safari) do
+    in_browser(:safari) do
       visit '/'
       click_button "New Game"
       fill_in("name", with: "Jill")
       click_button 'Submit'
       expect(page).to have_content "player_2: Jill"
-
     end
   end
 end
