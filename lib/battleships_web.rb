@@ -90,9 +90,9 @@ class BattleshipsWeb < Sinatra::Base
 
   def is_player_loser?
     if session[:player_to_play] == "player_1"
-      lost = true if $game.player_1.winner? == false
+      lost = true unless $game.player_1.winner?
     else
-      lost = true if $game.player_2.winner? == false
+      lost = true unless $game.player_2.winner?
     end
     lost
   end
