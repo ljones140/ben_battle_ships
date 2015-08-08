@@ -44,7 +44,7 @@ feature 'hit is returned' do
     $player_count = 1
   end
 
-  scenario 'Win' do
+  scenario 'Hit' do
     in_browser(:chrome) do
       visit '/'
       click_button "New Game"
@@ -126,7 +126,6 @@ feature 'A player can win' do
       click_button "Submit"
     end
 
-
     in_browser(:safari) do
       visit '/'
       click_button "New Game"
@@ -136,6 +135,42 @@ feature 'A player can win' do
       fill_in "coordinate", with: "A1"
       click_button "fire"
       expect(page).to have_content "You Have won"
+    end
+  end
+end
+
+feature 'A player can lose' do
+
+  before do
+    $game = Game.new(Player, Board)
+    $player_count = 1
+  end
+
+  scenario 'lose' do
+    in_browser(:chrome) do
+      visit '/'
+      click_button "New Game"
+      fill_in("name", with: "Jack")
+      click_button 'Submit'
+      select "submarine", from: "fleet"
+      fill_in "coordinate", with: "A1"
+      page.find(:css, '[name=direction][value=horizontally]').set(true)
+      click_button "Submit"
+    end
+
+    in_browser(:safari) do
+      visit '/'
+      click_button "New Game"
+      fill_in("name", with: "Jill")
+      click_button 'Submit'
+      click_button "ready"
+      fill_in "coordinate", with: "A1"
+      click_button "fire"
+    end
+
+    in_browser(:chrome) do
+      click_button "ready"
+      expect(page).to have_content "You Have lost"
     end
   end
 end

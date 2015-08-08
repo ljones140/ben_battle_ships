@@ -39,6 +39,7 @@ class BattleshipsWeb < Sinatra::Base
     @shoot_result = shoot params if params[:fire]
     @enemy_board = $game.opponent_board_view($game.send(@player_to_play))
     @win_status = "You Have won" if is_player_winner?
+    @win_status = "You Have lost" if is_player_loser?
     erb :play
   end
 
@@ -79,13 +80,21 @@ class BattleshipsWeb < Sinatra::Base
   end
 
   def is_player_winner?
-    # $game.send(session[:player_to_play]).winner?
     if session[:player_to_play] == "player_1"
       won = $game.player_1.winner?
     else
       won = $game.player_2.winner?
     end
     won
+  end
+
+  def is_player_loser?
+    if session[:player_to_play] == "player_1"
+      lost = true if $game.player_1.winner? == false
+    else
+      lost = true if $game.player_2.winner? == false
+    end
+    lost
   end
 
 
